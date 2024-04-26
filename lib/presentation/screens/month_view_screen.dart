@@ -50,7 +50,7 @@ class MonthViewScreen extends StatelessWidget {
     DateTime(today.year, today.month, today.day, 9, 0, 0);
     final DateTime endTime = startTime.add(const Duration(hours: 2));
     meetings.add(
-        Event(eventTitle: 'Conference', startTime:  startTime, endTime: endTime, background: const Color(0xFF0F8644), isAllDay:  false, description: "Oke"));
+        Event(eventTitle: 'Conference', startTime:  startTime, endTime: endTime, backgroundHex: 0xFF0F8644, isAllDay:  false, description: "Oke"));
     return meetings;
   }
 }

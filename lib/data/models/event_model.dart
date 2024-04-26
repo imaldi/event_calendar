@@ -10,7 +10,7 @@ class Event extends HiveObject {
       this.eventTitle,
       this.startTime,
       this.endTime,
-      this.background,
+      this.backgroundHex,
       this.isAllDay,
       this.description});
 
@@ -21,7 +21,7 @@ class Event extends HiveObject {
   @HiveField(2)
   DateTime? endTime;
   @HiveField(3)
-  Color? background;
+  int? backgroundHex;
   @HiveField(4)
   bool? isAllDay;
   @HiveField(5)

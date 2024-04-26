@@ -20,7 +20,7 @@ class EventAdapter extends TypeAdapter<Event> {
       eventTitle: fields[0] as String?,
       startTime: fields[1] as DateTime?,
       endTime: fields[2] as DateTime?,
-      background: fields[3] as Color?,
+      backgroundHex: fields[3] as int?,
       isAllDay: fields[4] as bool?,
       description: fields[5] as String?,
     );
@@ -37,7 +37,7 @@ class EventAdapter extends TypeAdapter<Event> {
       ..writeByte(2)
       ..write(obj.endTime)
       ..writeByte(3)
-      ..write(obj.background)
+      ..write(obj.backgroundHex)
       ..writeByte(4)
       ..write(obj.isAllDay)
       ..writeByte(5)

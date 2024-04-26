@@ -16,14 +16,24 @@ class AddEventScreen extends StatefulWidget {
 
 class _AddEventScreenState extends State<AddEventScreen> {
   final _formKey = GlobalKey<FormState>();
+  String dbDataEventDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
   final _eventTitleController = TextEditingController();
-  final _startTimeController = TextEditingController();
-  final _endTimeController = TextEditingController();
+  final _eventDateController = TextEditingController();
+  final _startTimeController = TextEditingController(text: "00:00");
+  final _endTimeController = TextEditingController(text: "00:00");
   Color _background = Colors.blue;
   bool _isAllDay = false;
   final _descriptionController = TextEditingController();
-  String dbDataStartDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
-  
+  DateTime startDateTime = DateTime.now();
+  DateTime endDateTime = DateTime.now();
+
+  @override
+  void initState() {
+    _eventDateController.text = DateFormat(
+        "dd/MM/yyyy")
+        .format(DateTime.now());
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -49,6 +59,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CustomTextFormField(
+                  autofocus: false,
                   label: 'Event Title',
                   controller:
                   _eventTitleController,
@@ -58,6 +69,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     padding: EdgeInsets.only(left: 2),
                     child: InkWell(
                       onTap: () async {
+
                         var now = DateTime.now();
                         var res =
                         await showDatePicker(
@@ -71,11 +83,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               .year),
                         );
                         if (res != null) {
-                          _startTimeController
+                          setState(() {
+                            startDateTime = res;
+                          });
+                          _eventDateController
                               .text = DateFormat(
                               "dd/MM/yyyy")
                               .format(res);
-                          dbDataStartDate =
+                          dbDataEventDate =
                               DateFormat(
                                   "yyyy-MM-dd")
                                   .format(res);
@@ -88,40 +103,98 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       child: CustomTextFormField(
                         label: 'Select Date',
                         controller:
-                        _startTimeController,
+                        _eventDateController,
                         enabled: false,
                           activelyDisabled: true,
                         hintText: DateFormat("dd/MM/yyyy")
                             .format(DateTime.now()),
                       ),
                     )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Row(children: [
+                    Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            var now = DateTime.now();
+                            var timeNow = TimeOfDay(hour: now.hour, minute: now.minute);
+                            var res =
+                            await showTimePicker(
+                              context: context,
+                              initialTime: timeNow,
+                              initialEntryMode: TimePickerEntryMode.dial,
+                            );
+                            if (res != null) {
+                              setState(() {
+                                startDateTime = startDateTime.copyWith(hour: res.hour, minute: res.minute);
+                              });
+                              _startTimeController
+                                  .text = DateFormat(
+                                  "HH:mm")
+                                  .format(startDateTime);
+                              dbDataEventDate =
+                                  DateFormat(
+                                      "yyyy-MM-dd")
+                                      .format(startDateTime);
+                              // formEGateCubit.setStartFrom(res);
+                              // print("formatDate(res) ${formatDate(res)}");
+                              print(
+                                  "formatDate(res) $res");
+                            }
+                          },
+                          child: CustomTextFormField(
+                            label: 'Start Time',
+                            controller:
+                            _startTimeController,
+                            enabled: false,
+                            activelyDisabled: true,
+                            hintText: DateFormat("HH:mm")
+                                .format(DateTime.now().copyWith(hour: 0,minute: 0)),
+                          ),
+                        )),
+                    const SizedBox(width: 8,),
+                    Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            var now = DateTime.now();
+                            var timeNow = TimeOfDay(hour: now.hour, minute: now.minute);
+                            var res =
+                            await showTimePicker(
+                              context: context,
+                              initialTime: timeNow,
+                            );
+                            if (res != null) {
+                              print("End Time: ${res.hour}");
+                              setState(() {
+                                endDateTime = startDateTime.copyWith(hour: res.hour, minute: res.minute);
+                              });
+                              print("End Time Date: ${endDateTime.hour}");
 
-                TextFormField(
-                  controller: _startTimeController,
-                  decoration: const InputDecoration(
-                    labelText: 'Start Time',
-                    // floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a start time';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _endTimeController,
-                  decoration: const InputDecoration(
-                    labelText: 'End Time',
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter an end time';
-                    }
-                    return null;
-                  },
+                              _endTimeController
+                                  .text = DateFormat(
+                                  "HH:mm")
+                                  .format(endDateTime);
+                              dbDataEventDate =
+                                  DateFormat(
+                                      "yyyy-MM-dd")
+                                      .format(endDateTime);
+                              // formEGateCubit.setStartFrom(res);
+                              // print("formatDate(res) ${formatDate(res)}");
+                              print(
+                                  "formatDate(res) $res");
+                            }
+                          },
+                          child: CustomTextFormField(
+                            label: 'End Time',
+                            controller:
+                            _endTimeController,
+                            enabled: false,
+                            activelyDisabled: true,
+                            hintText: DateFormat("HH:mm")
+                                .format(DateTime.now().copyWith(hour: 0,minute: 0)),
+                          ),
+                        )),
+                  ],),
                 ),
                 const SizedBox(height: 16.0),
                 // ColorPicker(
@@ -143,12 +216,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   },
                 ),
                 const SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
+                CustomTextFormField(
+                  autofocus: false,
+                  label: 'Event Description',
+                  controller:
+                  _descriptionController,
                 ),
                 const SizedBox(height: 32.0),
                 ElevatedButton(
@@ -158,7 +230,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         eventTitle: _eventTitleController.text,
                         startTime: DateTime.tryParse(_startTimeController.text),
                         endTime: DateTime.tryParse(_endTimeController.text),
-                        background: _background,
+                        backgroundHex: _background.value,
                         isAllDay: _isAllDay,
                         description: _descriptionController.text,
                       );
