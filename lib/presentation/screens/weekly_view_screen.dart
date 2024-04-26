@@ -24,8 +24,6 @@ class WeeklyViewScreen extends StatelessWidget {
                     eventBox.values.toList()
                   // _getDataSource()
                 ),
-                monthViewSettings: const MonthViewSettings(
-                    appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
               );
             }
         ),

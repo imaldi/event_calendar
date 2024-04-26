@@ -43,7 +43,10 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
         body: ValueListenableBuilder(
             valueListenable: eventBox.listenable(),
             builder: (context, box, widget) {
-              eventBox.values.forEach((element) {print("StartTime: ${element.startTime}");});
+              eventBox.values.forEach((element) {
+                print("StartTime: ${element.startTime}");
+                print("EndTime: ${element.endTime}");
+              });
               // print("List events: ${}");
               return SfCalendar(
                 view: CalendarView.day,
@@ -53,13 +56,14 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                     eventBox.values.toList()
                   // _getDataSource()
                 ),
+
                 timeSlotViewSettings: TimeSlotViewSettings(
                   startHour: 7,
                   endHour: 18,
                   timelineAppointmentHeight: 32,
                   minimumAppointmentDuration: Duration(hours: 0),
                   timeRulerSize: 70,
-                  allDayPanelColor: Colors.blue
+                  // allDayPanelColor: Colors.blue
                 ),
       
                 // monthViewSettings: const MonthViewSettings(
