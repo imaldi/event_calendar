@@ -1,4 +1,5 @@
-import 'package:event_calendar/presentation/data/models/meeting_model.dart';
+
+import 'package:event_calendar/data/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 

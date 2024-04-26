@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
                 width: double.maxFinite,
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const MonthViewScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MonthViewScreen()));
                     }, child: const Text("Month View")),
               ),
               const SizedBox(
