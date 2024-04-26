@@ -1,6 +1,7 @@
 import 'package:event_calendar/data/models/event_model.dart';
 import 'package:event_calendar/presentation/screens/daily_view_screen.dart';
 import 'package:event_calendar/presentation/screens/month_view_screen.dart';
+import 'package:event_calendar/presentation/screens/weekly_view_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -48,7 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Container(
                   width: double.maxFinite,
-                  child: ElevatedButton(onPressed: () {}, child: const Text("Week View"))),
+                  child: ElevatedButton(onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WeeklyViewScreen()));
+
+                  }, child: const Text("Week View"))),
             ],
           ),
         ),

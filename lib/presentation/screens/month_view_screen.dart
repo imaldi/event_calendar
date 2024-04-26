@@ -13,44 +13,34 @@ class MonthViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ValueListenableBuilder(
-            valueListenable: eventBox.listenable(),
-          builder: (context, box, widget) {
-            return SfCalendar(
-              view: CalendarView.month,
-              firstDayOfWeek: DateTime.monday,
-              dataSource: EventDataSource(
-                eventBox.values.toList()
-                  // _getDataSource()
+    return SafeArea(
+      child: Scaffold(
+          body: ValueListenableBuilder(
+              valueListenable: eventBox.listenable(),
+            builder: (context, box, widget) {
+              return SfCalendar(
+                view: CalendarView.month,
+                firstDayOfWeek: DateTime.monday,
+                dataSource: EventDataSource(
+                  eventBox.values.toList()
+                    // _getDataSource()
+                ),
+                monthViewSettings: const MonthViewSettings(
+                    appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+              );
+            }
+          ),
+          floatingActionButton: FloatingActionButton(onPressed: () {
+            final eventBox = Hive.box<Event>('eventBox');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddEventScreen(eventBox: eventBox),
               ),
-              monthViewSettings: const MonthViewSettings(
-                  appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
             );
-          }
-        ),
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          final eventBox = Hive.box<Event>('eventBox');
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddEventScreen(eventBox: eventBox),
-            ),
-          );
-        },
-        child: Icon(Icons.add),),
+          },
+          child: Icon(Icons.add),),
+      ),
     );
-  }
-
-
-  List<Event> _getDataSource() {
-    final List<Event> meetings = <Event>[];
-    final DateTime today = DateTime.now();
-    final DateTime startTime =
-    DateTime(today.year, today.month, today.day, 9, 0, 0);
-    final DateTime endTime = startTime.add(const Duration(hours: 2));
-    meetings.add(
-        Event(eventTitle: 'Conference', startTime:  startTime, endTime: endTime, backgroundHex: 0xFF0F8644, isAllDay:  false, description: "Oke"));
-    return meetings;
   }
 }

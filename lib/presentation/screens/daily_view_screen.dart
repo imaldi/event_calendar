@@ -1,4 +1,9 @@
+import 'package:event_calendar/data/data_source/meeting_data_source.dart';
+import 'package:event_calendar/data/models/event_model.dart';
+import 'package:event_calendar/presentation/screens/add_event_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class Appointment {
@@ -15,6 +20,8 @@ class DailyViewScreen extends StatefulWidget {
 }
 
 class _DailyViewScreenState extends State<DailyViewScreen> {
+  final Box<Event> eventBox = Hive.box<Event>('eventBox');
+
   final List<Appointment> _appointments = [
     Appointment(
       subject: 'Meeting',
@@ -31,41 +38,43 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SfCalendar(
-      view: CalendarView.timelineDay,
-      backgroundColor: Colors.white,
-      dataSource: _getDataSource(),
-      initialDisplayDate: DateTime(2023, 5, 22),
-      timeSlotViewSettings: const TimeSlotViewSettings(
-        startHour: 8,
-        endHour: 20,
+    return SafeArea(
+      child: Scaffold(
+        body: ValueListenableBuilder(
+            valueListenable: eventBox.listenable(),
+            builder: (context, box, widget) {
+              eventBox.values.forEach((element) {print("StartTime: ${element.startTime}");});
+              // print("List events: ${}");
+              return SfCalendar(
+                view: CalendarView.day,
+                firstDayOfWeek: DateTime.monday,
+                dataSource: EventDataSource(
+                    eventBox.values.toList()
+                  // _getDataSource()
+                ),
+                timeSlotViewSettings: TimeSlotViewSettings(
+                  startHour: 7,
+                  endHour: 18,
+                  timeIntervalWidth: 8
+                ),
+      
+                // monthViewSettings: const MonthViewSettings(
+                //     appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+              );
+            }
+        ),
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          final eventBox = Hive.box<Event>('eventBox');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddEventScreen(eventBox: eventBox),
+            ),
+          );
+        },
+          child: Icon(Icons.add),),
       ),
     );
   }
 
-  _getDataSource() {
-    final List<Appointment> appointments = _appointments;
-    return AppointmentDataSource(appointments);
-  }
-}
-
-class AppointmentDataSource extends CalendarDataSource {
-  AppointmentDataSource(List<Appointment> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].startTime;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].endTime;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].subject;
-  }
 }
