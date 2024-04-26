@@ -21,6 +21,7 @@ class MonthViewScreen extends StatelessWidget {
               return SfCalendar(
                 view: CalendarView.month,
                 firstDayOfWeek: DateTime.monday,
+                showNavigationArrow: true,
                 dataSource: EventDataSource(
                   eventBox.values.toList()
                     // _getDataSource()

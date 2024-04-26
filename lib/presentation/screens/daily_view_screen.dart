@@ -48,6 +48,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
               return SfCalendar(
                 view: CalendarView.day,
                 firstDayOfWeek: DateTime.monday,
+                showNavigationArrow: true,
                 dataSource: EventDataSource(
                     eventBox.values.toList()
                   // _getDataSource()
@@ -55,7 +56,10 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                 timeSlotViewSettings: TimeSlotViewSettings(
                   startHour: 7,
                   endHour: 18,
-                  timeIntervalWidth: 8
+                  timelineAppointmentHeight: 32,
+                  minimumAppointmentDuration: Duration(hours: 0),
+                  timeRulerSize: 70,
+                  allDayPanelColor: Colors.blue
                 ),
       
                 // monthViewSettings: const MonthViewSettings(

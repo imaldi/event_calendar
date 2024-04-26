@@ -19,6 +19,7 @@ class WeeklyViewScreen extends StatelessWidget {
               return SfCalendar(
                 view: CalendarView.week,
                 firstDayOfWeek: DateTime.monday,
+                showNavigationArrow: true,
                 dataSource: EventDataSource(
                     eventBox.values.toList()
                   // _getDataSource()
