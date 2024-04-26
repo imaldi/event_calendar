@@ -228,8 +228,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     if (_formKey.currentState!.validate()) {
                       final event = Event(
                         eventTitle: _eventTitleController.text,
-                        startTime: DateTime.tryParse(_startTimeController.text),
-                        endTime: DateTime.tryParse(_endTimeController.text),
+                        startTime: startDateTime,
+                        endTime: endDateTime,
                         backgroundHex: _background.value,
                         isAllDay: _isAllDay,
                         description: _descriptionController.text,

@@ -25,7 +25,7 @@ class EventDataSource extends CalendarDataSource {
 
   @override
   Color getColor(int index) {
-    return appointments![index].background;
+    return Color(appointments![index].backgroundHex);
   }
 
   @override

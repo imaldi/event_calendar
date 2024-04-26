@@ -1,11 +1,24 @@
+import 'package:event_calendar/data/models/event_model.dart';
 import 'package:event_calendar/presentation/screens/daily_view_screen.dart';
 import 'package:event_calendar/presentation/screens/month_view_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // final eventBox = Hive.box<Event>('eventBox');
+    // eventBox.clear();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
